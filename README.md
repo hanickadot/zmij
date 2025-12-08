@@ -23,5 +23,3 @@ on dtoa-benchmark.
 | zmij           | 16.648    | 2.24x    |
 | dragonbox      | 13.843    | 2.69x    |
 | null           | 0.931     | 40.03x   |
-
-<img width="768" height="337" alt="image" src="https://github.com/user-attachments/assets/ac2aed96-451e-450a-a39f-9327504f0efa" />
