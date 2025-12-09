@@ -705,7 +705,7 @@ inline auto digits2(size_t value) noexcept -> const char* {
   return &data[value * 2];
 }
 
-// The idea of branchless trailing zero removal is by Yaoyuan Guo (ibireme).
+// The idea of branchless trailing zero removal is by Alexander Bolz.
 const char num_trailing_zeros[] =
     "\2\0\0\0\0\0\0\0\0\0\1\0\0\0\0\0\0\0\0\0"
     "\1\0\0\0\0\0\0\0\0\0\1\0\0\0\0\0\0\0\0\0"
