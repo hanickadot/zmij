@@ -858,11 +858,11 @@ void zmij::dtoa(double value, char* buffer) noexcept {
   constexpr int dec_exp_min = -292;
   auto [pow10_hi, pow10_lo] = pow10_significands[-dec_exp - dec_exp_min];
 
-  // round(log2(10) * 2**log2_pow10_exp) + 1
+  // log2_pow10_sig = round(log2(10) * 2**log2_pow10_exp) + 1
   constexpr int log2_pow10_sig = 217'707, log2_pow10_exp = 16;
 
   assert(dec_exp >= -350 && dec_exp <= 350);
-  // floor(log2(10**-dec_exp))
+  // pow10_bin_exp = floor(log2(10**-dec_exp))
   int pow10_bin_exp = -dec_exp * log2_pow10_sig >> log2_pow10_exp;
   // pow10 = ((pow10_hi << 63) | pow10_lo) * 2**(pow10_bin_exp - 126 + 1)
 
