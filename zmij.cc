@@ -10,7 +10,6 @@
 #include <stdint.h>  // uint64_t
 #include <string.h>  // memcpy
 
-#include <bit>     // std::bit_cast
 #include <limits>  // std::numeric_limits
 
 namespace {
