@@ -868,14 +868,14 @@ void dtoa(double value, char* buffer) noexcept {
   assert(dec_exp >= -350 && dec_exp <= 350);
   // pow10_bin_exp = floor(log2(10**-dec_exp))
   int pow10_bin_exp = -dec_exp * log2_pow10_sig >> log2_pow10_exp;
-  // pow10 = ((pow10_hi << 63) | pow10_lo) * 2**(pow10_bin_exp - 126 + 1)
+  // pow10 = ((pow10_hi << 64) | pow10_lo) * 2**(pow10_bin_exp - 126)
 
   // Shift to ensure the intermediate result in umul192_upper64_modified has
   // a fixed 128-bit fractional width. For example, 3 * 2**59 and 3 * 2**60
   // both have dec_exp = 2 and dividing them by 10**dec_exp would have the
   // decimal point in different (bit) positions without the shift:
-  //   3 * 2**59 / 100 = 1.72...e+16 (shift = 3)
-  //   3 * 2**60 / 100 = 3.45...e+16 (shift = 4)
+  //   3 * 2**59 / 100 = 1.72...e+16 (shift = 1 + 2)
+  //   3 * 2**60 / 100 = 3.45...e+16 (shift = 2 + 2)
   int shift = bin_exp + pow10_bin_exp + 2;
 
   // Compute the estimates of lower and upper bounds of the rounding interval
