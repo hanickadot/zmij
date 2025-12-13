@@ -26,6 +26,11 @@ struct uint128 {
   }
 };
 
+[[maybe_unused]] auto operator+(uint128 lhs, uint128 rhs) noexcept -> uint128 {
+  uint64_t lo = lhs.lo + rhs.lo;
+  return {lhs.hi + rhs.hi + (lo < lhs.lo), lo};
+}
+
 #ifdef __SIZEOF_INT128__
 using uint128_t = unsigned __int128;
 #else
