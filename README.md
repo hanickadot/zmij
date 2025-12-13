@@ -64,7 +64,8 @@ Compile time is ~60ms by default and ~68ms with optimizations enabled as measure
 taking the best of 3 runs.
 
 
-Differences from Schubfach:
+## Differences from Schubfach
+
 * Selection from 1-3 candidates instead of 2-4
 * Fewer integer multiplications in the shorter case
 * Faster logarithm approximations
