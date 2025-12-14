@@ -664,22 +664,19 @@ inline auto umul128(uint64_t x, uint64_t y) noexcept -> uint128_t {
 #ifdef __SIZEOF_INT128__
   return uint128_t(x) * y;
 #else
-  constexpr uint64_t mask = ~uint32_t();
-
   uint64_t a = x >> 32;
-  uint64_t b = x & mask;
+  uint64_t b = uint32_t(x);
   uint64_t c = y >> 32;
-  uint64_t d = y & mask;
+  uint64_t d = uint32_t(y);
 
   uint64_t ac = a * c;
   uint64_t bc = b * c;
   uint64_t ad = a * d;
   uint64_t bd = b * d;
 
-  uint64_t intermediate = (bd >> 32) + (ad & mask) + (bc & mask);
-
-  return {ac + (intermediate >> 32) + (ad >> 32) + (bc >> 32),
-          (intermediate << 32) + (bd & mask)};
+  uint64_t mid = (bd >> 32) + uint32_t(ad) + uint32_t(bc);
+  return {ac + (mid >> 32) + (ad >> 32) + (bc >> 32),
+          (mid << 32) + uint32_t(bd)};
 #endif  // __SIZEOF_INT128__
 }
 
