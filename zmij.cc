@@ -660,7 +660,7 @@ const uint128 pow10_significands[] = {
 };
 
 // Computes 128-bit result of multiplication of two 64-bit unsigned integers.
-auto umul128(uint64_t x, uint64_t y) noexcept -> uint128_t {
+inline auto umul128(uint64_t x, uint64_t y) noexcept -> uint128_t {
 #ifdef __SIZEOF_INT128__
   return uint128_t(x) * y;
 #else
