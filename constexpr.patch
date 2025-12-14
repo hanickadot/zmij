@@ -1,0 +1,234 @@
+5,8d4
+< #if __has_include("zmij.h")
+< #  include "zmij.h"
+< #endif
+< 
+13a10
+> #include <bit>
+15,16d11
+< namespace orig {
+< 
+23c18
+<   [[maybe_unused]] explicit operator uint64_t() const noexcept { return lo; }
+---
+>   [[maybe_unused]] constexpr explicit operator uint64_t() const noexcept { return lo; }
+25c20
+<   [[maybe_unused]] auto operator>>(int shift) const noexcept -> uint128 {
+---
+>   [[maybe_unused]] constexpr auto operator>>(int shift) const noexcept -> uint128 {
+31c26
+< [[maybe_unused]] auto operator+(uint128 lhs, uint128 rhs) noexcept -> uint128 {
+---
+> [[maybe_unused]] constexpr auto operator+(uint128 lhs, uint128 rhs) noexcept -> uint128 {
+44c39
+< const uint128 pow10_significands[] = {
+---
+> constexpr uint128 pow10_significands[] = {
+665c660
+< inline auto umul128(uint64_t x, uint64_t y) noexcept -> uint128_t {
+---
+> constexpr auto umul128(uint64_t x, uint64_t y) noexcept -> uint128_t {
+669,672c664,667
+<   uint64_t a = x >> 32;
+<   uint64_t b = uint32_t(x);
+<   uint64_t c = y >> 32;
+<   uint64_t d = uint32_t(y);
+---
+>   const uint64_t a = x >> 32;
+>   const uint64_t b = uint32_t(x);
+>   const uint64_t c = y >> 32;
+>   const uint64_t d = uint32_t(y);
+674,677c669,672
+<   uint64_t ac = a * c;
+<   uint64_t bc = b * c;
+<   uint64_t ad = a * d;
+<   uint64_t bd = b * d;
+---
+>   const uint64_t ac = a * c;
+>   const uint64_t bc = b * c;
+>   const uint64_t ad = a * d;
+>   const uint64_t bd = b * d;
+679c674
+<   uint64_t cs = uint32_t(ad) + uint32_t(bc) + (bd >> 32);  // cross sum
+---
+>   const uint64_t cs = uint32_t(ad) + uint32_t(bc) + (bd >> 32);  // cross sum
+686c681
+< auto umul192_upper64_inexact_to_odd(uint64_t x_hi, uint64_t x_lo,
+---
+> constexpr auto umul192_upper64_inexact_to_odd(uint64_t x_hi, uint64_t x_lo,
+688c683
+<   uint128_t result = umul128(x_hi, y) + (umul128(x_lo, y) >> 64);
+---
+>   const uint128_t result = umul128(x_hi, y) + (umul128(x_lo, y) >> 64);
+694c689
+< inline auto digits2(size_t value) noexcept -> const char* {
+---
+> constexpr auto digits2(size_t value) noexcept -> const char* {
+697c692
+<   alignas(2) static const char data[] =
+---
+>   alignas(2) static constexpr const char data[] =
+707c702
+< const char num_trailing_zeros[] =
+---
+> constexpr const char num_trailing_zeros[] =
+720c715
+< inline auto divmod100(uint32_t value) noexcept -> divmod_result {
+---
+> constexpr auto divmod100(uint32_t value) noexcept -> divmod_result {
+722,724c717,719
+<   constexpr int exp = 19;  // 19 is faster or equal to 12 even for 3 digits.
+<   constexpr int sig = (1 << exp) / 100 + 1;
+<   uint32_t div = (value * sig) >> exp;  // value / 100
+---
+>   static constexpr int exp = 19;  // 19 is faster or equal to 12 even for 3 digits.
+>   static constexpr int sig = (1 << exp) / 100 + 1;
+>   const uint32_t div = (value * sig) >> exp;  // value / 100
+728c723
+< inline void write2digits(char* buffer, uint32_t value) noexcept {
+---
+> constexpr void write2digits(char* buffer, uint32_t value) noexcept {
+733,734c728,729
+< auto write4digits_trim_zeros(char* buffer, uint32_t value) noexcept -> char* {
+<   auto [aa, bb] = divmod100(value);
+---
+> constexpr auto write4digits_trim_zeros(char* buffer, uint32_t value) noexcept -> char* {
+>   const auto [aa, bb] = divmod100(value);
+743c738
+< auto write_significand(char* buffer, uint64_t value) noexcept -> char* {
+---
+> constexpr auto write_significand(char* buffer, uint64_t value) noexcept -> char* {
+746,752c741,747
+<   uint32_t abbccddee = uint32_t(value / 100'000'000);
+<   uint32_t ffgghhii = uint32_t(value % 100'000'000);
+<   uint32_t abbcc = abbccddee / 10'000;
+<   uint32_t ddee = abbccddee % 10'000;
+<   uint32_t abb = abbcc / 100;
+<   uint32_t cc = abbcc % 100;
+<   auto [a, bb] = divmod100(abb);
+---
+>   const uint32_t abbccddee = uint32_t(value / 100'000'000);
+>   const uint32_t ffgghhii = uint32_t(value % 100'000'000);
+>   const uint32_t abbcc = abbccddee / 10'000;
+>   const uint32_t ddee = abbccddee % 10'000;
+>   const uint32_t abb = abbcc / 100;
+>   const uint32_t cc = abbcc % 100;
+>   const auto [a, bb] = divmod100(abb);
+764,767c759,762
+<   auto [dd, ee] = divmod100(ddee);
+<   uint32_t ffgg = ffgghhii / 10'000;
+<   uint32_t hhii = ffgghhii % 10'000;
+<   auto [ff, gg] = divmod100(ffgg);
+---
+>   const auto [dd, ee] = divmod100(ddee);
+>   const uint32_t ffgg = ffgghhii / 10'000;
+>   const uint32_t hhii = ffgghhii % 10'000;
+>   const auto [ff, gg] = divmod100(ffgg);
+778c773
+< void write(char* buffer, uint64_t dec_sig, int dec_exp) noexcept {
+---
+> constexpr void write(char* buffer, uint64_t dec_sig, int dec_exp) noexcept {
+781c776
+<   char* start = buffer;
+---
+>   char* const start = buffer;
+793c788
+<   auto [a, bb] = divmod100(uint32_t(dec_exp));
+---
+>   const auto [a, bb] = divmod100(uint32_t(dec_exp));
+804,806c799,802
+< void dtoa(double value, char* buffer) noexcept {
+<   uint64_t bits = 0;
+<   memcpy(&bits, &value, sizeof(value));
+---
+> constexpr int buffer_size = 25;
+> 
+> constexpr void dtoa(double value, char* buffer) noexcept {
+>   const uint64_t bits = std::bit_cast<uint64_t>(value);
+810,811c806,807
+<   constexpr int num_sig_bits = std::numeric_limits<double>::digits - 1;
+<   constexpr int exp_mask = 0x7ff;
+---
+>   static constexpr int num_sig_bits = std::numeric_limits<double>::digits - 1;
+>   static constexpr int exp_mask = 0x7ff;
+842c838
+<   uint64_t bin_sig_shifted = bin_sig << 2;
+---
+>   const uint64_t bin_sig_shifted = bin_sig << 2;
+844,847d839
+<   // Compute the shifted boundaries of the rounding interval (Rv).
+<   uint64_t lower = bin_sig_shifted - (regular + 1);
+<   uint64_t upper = bin_sig_shifted + 2;
+< 
+849c841
+<   constexpr int log10_3_over_4_sig = -131'008;
+---
+>   static constexpr int log10_3_over_4_sig = -131'008;
+851,852c843,844
+<   constexpr int log10_2_sig = 315'653;
+<   constexpr int log10_2_exp = 20;
+---
+>   static constexpr int log10_2_sig = 315'653;
+>   static constexpr int log10_2_exp = 20;
+857c849
+<   int dec_exp =
+---
+>   const int dec_exp =
+860,861c852,853
+<   constexpr int dec_exp_min = -292;
+<   auto [pow10_hi, pow10_lo] = pow10_significands[-dec_exp - dec_exp_min];
+---
+>   static constexpr int dec_exp_min = -292;
+>   const auto [pow10_hi, pow10_lo] = pow10_significands[-dec_exp - dec_exp_min];
+864c856
+<   constexpr int log2_pow10_sig = 217'707, log2_pow10_exp = 16;
+---
+>   static constexpr int log2_pow10_sig = 217'707, log2_pow10_exp = 16;
+868c860
+<   int pow10_bin_exp = -dec_exp * log2_pow10_sig >> log2_pow10_exp;
+---
+>   const int pow10_bin_exp = -dec_exp * log2_pow10_sig >> log2_pow10_exp;
+877c869
+<   int shift = bin_exp + pow10_bin_exp + 1;
+---
+>   const int shift = bin_exp + pow10_bin_exp + 1;
+878a871,874
+>   // Compute the shifted boundaries of the rounding interval (Rv).
+>   // const uint64_t lower = bin_sig_shifted - (regular + 1);
+>   // const uint64_t upper = bin_sig_shifted + 2;
+> 
+881,882c877,878
+<   uint64_t bin_sig_lsb = bin_sig & 1;
+<   lower = umul192_upper64_inexact_to_odd(pow10_hi, pow10_lo, lower << shift) +
+---
+>   const uint64_t bin_sig_lsb = bin_sig & 1;
+>   const uint64_t lower = umul192_upper64_inexact_to_odd(pow10_hi, pow10_lo, (uint64_t)(bin_sig_shifted - (regular + 1)) << shift) +
+884c880
+<   upper = umul192_upper64_inexact_to_odd(pow10_hi, pow10_lo, upper << shift) -
+---
+>   const uint64_t upper = umul192_upper64_inexact_to_odd(pow10_hi, pow10_lo, (uint64_t)(bin_sig_shifted + 2) << shift) -
+889c885
+<   uint64_t shorter = 10 * ((upper >> 2) / 10);
+---
+>   const uint64_t shorter = 10 * ((upper >> 2) / 10);
+892c888
+<   uint64_t scaled_sig = umul192_upper64_inexact_to_odd(
+---
+>   const uint64_t scaled_sig = umul192_upper64_inexact_to_odd(
+894,895c890,891
+<   uint64_t dec_sig_under = scaled_sig >> 2;
+<   uint64_t dec_sig_over = dec_sig_under + 1;
+---
+>   const uint64_t dec_sig_under = scaled_sig >> 2;
+>   const uint64_t dec_sig_over = dec_sig_under + 1;
+899,901c895,897
+<   int64_t cmp = int64_t(scaled_sig - ((dec_sig_under + dec_sig_over) << 1));
+<   bool under_closer = cmp < 0 || (cmp == 0 && (dec_sig_under & 1) == 0);
+<   bool under_in = (dec_sig_under << 2) >= lower;
+---
+>   const int64_t cmp = int64_t(scaled_sig - ((dec_sig_under + dec_sig_over) << 1));
+>   const bool under_closer = cmp < 0 || (cmp == 0 && (dec_sig_under & 1) == 0);
+>   const bool under_in = (dec_sig_under << 2) >= lower;
+907,908d902
+< 
+< } // namespace orig
