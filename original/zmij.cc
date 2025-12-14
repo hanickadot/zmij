@@ -12,6 +12,8 @@
 
 #include <limits>  // std::numeric_limits
 
+namespace orig {
+
 namespace {
 
 struct uint128 {
@@ -902,3 +904,5 @@ void dtoa(double value, char* buffer) noexcept {
 }
 
 }  // namespace zmij
+
+} // namespace orig

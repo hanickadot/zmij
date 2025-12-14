@@ -1,4 +1,4 @@
-#include "zmij.cc"
+#include "zmij.h"
 
 #include <gtest/gtest.h>
 
@@ -10,13 +10,13 @@ auto dtoa(double value) -> std::string {
   return buffer;
 }
 
-TEST(zmij_test, umul192_upper64_modified) {
+TEST(zmij_test, umul192_upper64_inexact_to_odd) {
   auto pow10 = pow10_significands[0];
   EXPECT_EQ(
-      umul192_upper64_modified(pow10.hi, pow10.lo, 0x1234567890abcdef << 1),
+      umul192_upper64_inexact_to_odd(pow10.hi, pow10.lo, 0x1234567890abcdef << 1),
       0x24554a3ce60a45f5);
   EXPECT_EQ(
-      umul192_upper64_modified(pow10.hi, pow10.lo, 0x1234567890abce16 << 1),
+      umul192_upper64_inexact_to_odd(pow10.hi, pow10.lo, 0x1234567890abce16 << 1),
       0x24554a3ce60a4643);
 }
 
